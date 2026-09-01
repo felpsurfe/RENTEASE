@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="pt-PT">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +11,7 @@
   <script src="js/storage.js" defer></script>
   <script src="js/flats.js" defer></script>
 </head>
+
 <body>
   <header class="site-header">
     <nav class="nav container">
@@ -19,7 +21,7 @@
       </a>
 
       <div class="nav__links">
-        <a href="index.html">Resumo</a>
+        <a href="index.html">Home</a>
         <a class="current-page" href="flats.html">Apartamentos</a>
         <a class="button button--small" href="new-flat.html">Novo apartamento</a>
       </div>
@@ -38,8 +40,11 @@
     <section class="container content-section">
       <form id="filtersForm" class="filters-panel">
         <div class="section-heading">
-          <p class="eyebrow">Refinar resultados</p>
-          <h2>Filtros e ordenação</h2>
+          <div>
+            <p class="eyebrow">Refinar resultados</p>
+            <h2>Filtros e ordenação</h2>
+          </div>
+          <button id="clearFiltersButton" class="button button--secondary" type="reset">Limpar filtros</button>
         </div>
 
         <div class="filters-grid">
@@ -50,25 +55,25 @@
 
           <div class="field">
             <!-- TODO HTML-2: acrescenta um label associado a minPriceFilter. -->
-             <label for="minPriceFilter">Preço mínimo (€)</label>
+            <label for="minPriceFilter">Preço mínimo (€)</label>
             <input id="minPriceFilter" name="minPrice" type="number" min="0" step="0.01" placeholder="Preço mínimo">
           </div>
 
           <div class="field">
             <!-- TODO HTML-3: acrescenta um label associado a maxPriceFilter. -->
-             <label for="maxPriceFilter">Preço máximo (€)</label>
+            <label for="maxPriceFilter">Preço máximo (€)</label>
             <input id="maxPriceFilter" name="maxPrice" type="number" min="0" step="0.01" placeholder="Preço máximo">
           </div>
 
           <div class="field">
             <!-- TODO HTML-4: acrescenta um label associado a minAreaFilter. -->
-             <label for="minAreaFilter">Área mínima (m²)</label>
+            <label for="minAreaFilter">Área mínima (m²)</label>
             <input id="minAreaFilter" name="minArea" type="number" min="0" step="0.1" placeholder="Área mínima">
           </div>
 
           <div class="field">
             <!-- TODO HTML-5: acrescenta um label associado a maxAreaFilter. -->
-             <label for="maxAreaFilter">Área máxima (m²)</label>
+            <label for="maxAreaFilter">Área máxima (m²)</label>
             <input id="maxAreaFilter" name="maxArea" type="number" min="0" step="0.1" placeholder="Área máxima">
           </div>
 
@@ -81,9 +86,18 @@
               <option value="area">Área</option>
             </select>
           </div>
+
+          <div class="field">
+            <label for="filter-sort-order">Direcção</label>
+            <select id="filter-sort-order">
+              <option value="asc">Ascendente</option>
+              <option value="desc">Descendente</option>
+            </select>
+          </div>
+        </div>
         </div>
 
-        <button id="clearFiltersButton" class="button button--secondary" type="reset">Limpar filtros</button>
+
       </form>
     </section>
 
@@ -107,4 +121,5 @@
     </div>
   </footer>
 </body>
+
 </html>
