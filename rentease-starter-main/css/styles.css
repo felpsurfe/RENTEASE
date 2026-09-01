@@ -440,40 +440,58 @@ p.eyebrow,
 }
 
 /* TODO CSS-6: acrescenta regras específicas para ecrãs até 700px. */
+/* TODO CSS-6: acrescenta regras específicas para ecrãs até 700px. */
 @media (max-width: 700px) {
 
   /* Ponto 1: Separa Resumo e Apartamentos nas pontas e força o botão para a linha de baixo */
   .nav {
     flex-direction: column;
     align-items: stretch;
+    gap: 1rem;
   }
 
   .nav__links {
     width: 100%;
     display: flex;
+    flex-wrap: wrap; /* Permite que o botão caia para a linha de baixo */
     justify-content: space-between;
-    gap: 0.5rem;
+    gap: 0.75rem;
   }
 
-  .nav__links>a:not(.button) {
+  /* Os links "Resumo" e "Apartamentos" dividem a primeira linha */
+  .nav__links > a:not(.button) {
     flex: 1;
     text-align: center;
   }
 
-  .nav__links>a.button {
+  /* O botão "Novo apartamento" ocupa 100% da largura na linha de baixo */
+  .nav__links > a.button {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* 1. Título: reduz ligeiramente o tamanho da fonte para a frase couber toda na mesma linha */
+  .page-hero h1,
+  .page-hero .page-title {
+    font-size: 1.5rem; /* Ajusta o tamanho do texto para não quebrar linha */
+    width: 100%;
+    text-align: left;
+  }
+
+  /* 2. Botões do Hero: mantêm o tamanho compacto (auto) e ficam lado a lado alinhados à esquerda */
+  .hero-actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.75rem;
     width: 100%;
   }
 
-  /* Ponto 2 e 2.5: Adapta o Hero, o título sem quebrar/sumir e o botão de ação */
-  .page-hero,
-  .page-title {
-    padding-block: 2rem;
+  .hero-actions .button {
+    width: auto !important; /* Anula o width: 100% apenas no hero para os botões não esticarem */
   }
 
-  .hero-actions .button,
-  .form-actions .button {
-    width: 100%;
-  }
 
   /* Ponto 5: Botão Limpar Filtros fica logo abaixo do título "Filtros e Ordenação" */
   .section-heading--actions {
@@ -485,11 +503,87 @@ p.eyebrow,
   .section-heading--actions .button {
     width: 100%;
   }
+  
+ /* Cartão do formulário que limita e centra o conteúdo na tela */
+.form-card {
+  width: 100%;
+  max-width: 800px; /* Impede que fique exageradamente largo em monitores grandes */
+  margin: 0 auto;
+  background-color: var(--color-surface, #ffffff);
+  padding: 2rem;
+  border-radius: 12px;
+}
 
-  /* Adaptação das grelhas em ecran móvel */
-  .filters-grid,
-  .form-grid,
-  .property-card__facts {
-    grid-template-columns: 1fr;
-  }
+/* Estrutura dos campos: 1 coluna onde cada campo ocupa a linha toda */
+.form-grid {
+  display: flex;
+  flex-direction: column; /* Força os elementos a empilharem na vertical */
+  gap: 1.25rem; /* Espaço uniforme entre cada campo */
+  width: 100%;
+}
+
+/* Agrupamento do rótulo (label) e input */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+/* Garante que os inputs, selects e textareas ocupam 100% da largura da tela/card */
+.form-group input,
+.form-group select,
+.form-group textarea,
+.form-control {
+  width: 100%;
+  box-sizing: border-box; /* Evita que o padding faça o input sair fora da borda */
+}
+
+.filters-grid {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 1rem;
+}
+
+.filters-grid .form-group,
+.filters-grid input,
+.filters-grid select {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 2. Grelha de Cartões dos Imóveis: 1 cartão por linha */
+.flats-grid,
+.properties-grid,
+.cards-grid {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 1.5rem;
+}
+
+/* 3. Cartão do Imóvel: Garante que o cartão e os detalhes usam a largura total */
+.property-card,
+.flat-card {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Imagem do cartão ocupa toda a largura */
+.property-card__image,
+.flat-card__image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+/* Factos/Detalhes do imóvel (área, quartos, preço) a 1 ou 2 colunas no mobile */
+.property-card__facts,
+.flat-card__facts {
+  display: grid;
+  grid-template-columns: 1fr; /* Força 1 coluna se quiseres tudo empilhado */
+  gap: 0.75rem;
+  width: 100%;
+}
 }
