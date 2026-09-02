@@ -141,11 +141,13 @@ a {
   background: white;
   border: 1px solid var(--color-primary-dark);
   transition: background-color 0.2s ease, color 0.2s ease;
-} 
+}
+
 /* Correção do hover sobre o botão */
 .button--secondary:hover {
   background: var(--color-primary-dark) !important;
-  color: #ffffff !important; /* Força o texto a ficar branco quando o fundo fica azul */
+  color: #ffffff !important;
+  /* Força o texto a ficar branco quando o fundo fica azul */
 }
 
 .button--small {
@@ -162,13 +164,28 @@ a {
 
 .page-hero,
 .page-title {
-  padding: 3.5rem 0;
+  padding: 2.5rem 0;
   background: linear-gradient(135deg, #eff6ff, #ffffff);
   border-bottom: 1px solid var(--color-border);
 }
 
-.page-title {
-  padding-block: 2.5rem;
+.page-title .container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Aplica layout lado a lado APENAS se a page-title tiver o botão (2ª página) */
+.page-title--actions .container {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.page-title .button {
+  display: inline-flex;
+  white-space: nowrap;
 }
 
 h1,
@@ -184,9 +201,12 @@ h1 {
   margin: 0.3rem 0 0.75rem;
   font-size: clamp(1.6rem, 5vw, 3rem);
   line-height: 1.15;
-  font-weight: 900; /* Aumenta o negrito para o máximo */
-  color: #0f172a;   /* Um tom de azul/preto mais profundo e contrastante */
-  letter-spacing: -0.02em; /* Junta ligeiramente as letras para um visual mais moderno */
+  font-weight: 900;
+  /* Aumenta o negrito para o máximo */
+  color: #0f172a;
+  /* Um tom de azul/preto mais profundo e contrastante */
+  letter-spacing: -0.02em;
+  /* Junta ligeiramente as letras para um visual mais moderno */
 }
 
 p,
@@ -439,7 +459,8 @@ p.eyebrow,
   text-align: center;
 }
 
-/* TODO CSS-6: acrescenta regras específicas para ecrãs até 700px. */
+
+
 /* TODO CSS-6: acrescenta regras específicas para ecrãs até 700px. */
 @media (max-width: 700px) {
 
@@ -453,32 +474,60 @@ p.eyebrow,
   .nav__links {
     width: 100%;
     display: flex;
-    flex-wrap: wrap; /* Permite que o botão caia para a linha de baixo */
+    flex-wrap: wrap;
+    /* Permite que o botão caia para a linha de baixo */
     justify-content: space-between;
     gap: 0.75rem;
   }
 
   /* Os links "Resumo" e "Apartamentos" dividem a primeira linha */
-  .nav__links > a:not(.button) {
+  .nav__links>a:not(.button) {
     flex: 1;
     text-align: center;
   }
 
   /* O botão "Novo apartamento" ocupa 100% da largura na linha de baixo */
-  .nav__links > a.button {
+  .nav__links>a.button {
     width: 100%;
     text-align: center;
   }
 
-  /* 1. Título: reduz ligeiramente o tamanho da fonte para a frase couber toda na mesma linha */
+  /* UNIFORMIZAÇÃO DOS TÍTULOS DO PRIMEIRO BLOCO EM TODAS AS PÁGINAS */
+  .page-hero,
+  .page-title {
+    padding-block: 1.75rem 1.25rem;
+  }
+
   .page-hero h1,
-  .page-hero .page-title {
-    font-size: 1.5rem; /* Ajusta o tamanho do texto para não quebrar linha */
+  .page-title h1,
+  .page-title {
+    font-size: 1.45rem !important;
+    line-height: 1.25;
     width: 100%;
     text-align: left;
   }
 
-  /* 2. Botões do Hero: mantêm o tamanho compacto (auto) e ficam lado a lado alinhados à esquerda */
+  .page-title--actions .container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .page-title .button {
+    width: auto !important;
+    padding: 0.4rem 0.75rem !important; /* Espaçamento bem mais reduzido */
+    font-size: 1.2rem !important;        /* Fonte menor */
+    min-height: auto !important;         /* Remove a altura mínima padrão */
+    border-radius: 0.4rem;               /* Cantos ajustados ao tamanho menor */
+    margin-top: 0.25rem;
+  }
+
+  p.eyebrow,
+  .eyebrow {
+    font-size: 0.75rem !important;
+  }
+
+  /* Botões do Hero: mantêm o tamanho compacto e ficam lado a lado alinhados à esquerda */
   .hero-actions {
     display: flex;
     flex-direction: row;
@@ -489,9 +538,9 @@ p.eyebrow,
   }
 
   .hero-actions .button {
-    width: auto !important; /* Anula o width: 100% apenas no hero para os botões não esticarem */
+    width: auto !important;
+    /* Anula o width: 100% apenas no hero para os botões não esticarem */
   }
-
 
   /* Ponto 5: Botão Limpar Filtros fica logo abaixo do título "Filtros e Ordenação" */
   .section-heading--actions {
@@ -503,87 +552,88 @@ p.eyebrow,
   .section-heading--actions .button {
     width: 100%;
   }
-  
- /* Cartão do formulário que limita e centra o conteúdo na tela */
-.form-card {
-  width: 100%;
-  max-width: 800px; /* Impede que fique exageradamente largo em monitores grandes */
-  margin: 0 auto;
-  background-color: var(--color-surface, #ffffff);
-  padding: 2rem;
-  border-radius: 12px;
-}
 
-/* Estrutura dos campos: 1 coluna onde cada campo ocupa a linha toda */
-.form-grid {
-  display: flex;
-  flex-direction: column; /* Força os elementos a empilharem na vertical */
-  gap: 1.25rem; /* Espaço uniforme entre cada campo */
-  width: 100%;
-}
+  /* Cartão do formulário que limita e centra o conteúdo na tela */
+  .form-card {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: var(--color-surface, #ffffff);
+    padding: 1.5rem;
+    border-radius: 12px;
+  }
 
-/* Agrupamento do rótulo (label) e input */
-.form-group {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  width: 100%;
-}
+  /* Estrutura dos campos: 1 coluna onde cada campo ocupa a linha toda */
+  .form-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    width: 100%;
+  }
 
-/* Garante que os inputs, selects e textareas ocupam 100% da largura da tela/card */
-.form-group input,
-.form-group select,
-.form-group textarea,
-.form-control {
-  width: 100%;
-  box-sizing: border-box; /* Evita que o padding faça o input sair fora da borda */
-}
+  /* Agrupamento do rótulo (label) e input */
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
 
-.filters-grid {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  gap: 1rem;
-}
+  /* Garante que os inputs, selects e textareas ocupam 100% da largura da tela/card */
+  .form-group input,
+  .form-group select,
+  .form-group textarea,
+  .form-control {
+    width: 100%;
+    box-sizing: border-box;
+  }
 
-.filters-grid .form-group,
-.filters-grid input,
-.filters-grid select {
-  width: 100%;
-  box-sizing: border-box;
-}
+  .filters-grid {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 1rem;
+  }
 
-/* 2. Grelha de Cartões dos Imóveis: 1 cartão por linha */
-.flats-grid,
-.properties-grid,
-.cards-grid {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  gap: 1.5rem;
-}
+  .filters-grid .form-group,
+  .filters-grid input,
+  .filters-grid select {
+    width: 100%;
+    box-sizing: border-box;
+  }
 
-/* 3. Cartão do Imóvel: Garante que o cartão e os detalhes usam a largura total */
-.property-card,
-.flat-card {
-  width: 100%;
-  box-sizing: border-box;
-}
+  /* Grelha de Cartões dos Imóveis: 1 cartão por linha */
+  .flats-grid,
+  .properties-grid,
+  .property-grid,
+  .cards-grid {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 1.5rem;
+  }
 
-/* Imagem do cartão ocupa toda a largura */
-.property-card__image,
-.flat-card__image {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-}
+  /* Cartão do Imóvel: Garante que o cartão e os detalhes usam a largura total */
+  .property-card,
+  .flat-card {
+    width: 100%;
+    box-sizing: border-box;
+  }
 
-/* Factos/Detalhes do imóvel (área, quartos, preço) a 1 ou 2 colunas no mobile */
-.property-card__facts,
-.flat-card__facts {
-  display: grid;
-  grid-template-columns: 1fr; /* Força 1 coluna se quiseres tudo empilhado */
-  gap: 0.75rem;
-  width: 100%;
-}
+  /* Imagem do cartão ocupa toda a largura */
+  .property-card__image,
+  .flat-card__image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  /* Factos/Detalhes do imóvel a 1 coluna no mobile */
+  .property-card__facts,
+  .flat-card__facts {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    width: 100%;
+  }
 }
