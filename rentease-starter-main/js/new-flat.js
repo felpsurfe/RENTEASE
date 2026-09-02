@@ -150,20 +150,30 @@ newFlatForm.addEventListener("submit", (event) => {
     return;
   }
 
-  /*
-   * TODO JS-NEW-1
-   * 1. Carrega o array com loadFlats().
-   * 2. Cria newFlat com Date.now(), validationResult.data e isFavourite: false.
-   * 3. Adiciona newFlat ao array.
-   * 4. Chama saveFlats(flats).
-   * 5. Só se saveFlats devolver true: limpa o formulário, limpa os erros
-   *    e apresenta a mensagem de sucesso com o link para flats.html.
-   */
+  /* TODO JS-NEW-1 */
 
-  showFormFeedback(
-    "Os dados são válidos. Completa o TODO JS-NEW-1 para guardar o apartamento.",
-    "warning"
-  );
+  // 1. Carrega o array atual de apartamentos do localStorage
+  const flats = loadFlats();
+
+  // 2. Cria o novo objeto newFlat concatenando o ID e o estado inicial de favorito com os dados validados
+  const newFlat = {
+    id: Date.now(),
+    ...validationResult.data,
+    isFavourite: false
+  };
+
+  // 3. Adiciona o novo apartamento ao array existente
+  flats.push(newFlat);
+
+  // 4. Tenta guardar o array atualizado no localStorage
+  const isSaved = saveFlats(flats);
+
+  // 5. Só se saveFlats devolver true: limpa o formulário, limpa os erros e apresenta a mensagem de sucesso
+  if (isSaved) {
+    newFlatForm.reset();
+    showValidationErrors({});
+    showFormFeedback("Apartamento guardado com sucesso!", "success", true);
+  }
 });
 
 loadFlats();
