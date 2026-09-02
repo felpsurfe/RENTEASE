@@ -39,24 +39,51 @@ function getProcessedFlats() {
     return { flats: [], error: "A área mínima não pode ser superior à área máxima." };
   }
 
-  /*
-   * TODO JS-FLATS-1
-   * Usa filter() sobre allFlats.
-   * Um filtro vazio não deve excluir apartamentos.
-   * Os cinco filtros devem funcionar em conjunto.
-   * As variáveis city, minPrice, maxPrice, minArea e maxArea já estão preparadas.
-   */
-  const filteredFlats = allFlats;
+
+  /* TODO JS-FLATS-1 */
+
+  const filteredFlats = allFlats.filter((flat) => {
+    // 1. Filtro de Cidade (insensível a maiúsculas/minúsculas)
+    const matchesCity = !city || flat.city.toLowerCase().includes(city.toLowerCase());
+
+    // 2. Filtro de Preço Mínimo
+    const matchesminPrice = isNaN(minPrice) || flat.rentPrice >= minPrice;
+
+    // 3. Filtro de Preço Máximo
+    const matchesmaxPrice = isNaN(maxPrice) || flat.rentPrice <= maxPrice;
+
+    // 4. Filtro de Área Mínima
+    const matchesminArea = isNaN(minArea) || flat.areaSize >= minArea;
+
+    // 5. Filtro de Área Máxima
+    const matchesmaxArea = isNaN(maxArea) || flat.areaSize <= maxArea;
+
+    // Retorna true apenas se passar em TODOS os filtros
+    return matchesCity && matchesminPrice && matchesmaxPrice && matchesminArea && matchesmaxArea;
+  });
+
 
   // Esta cópia evita ordenar directamente o array carregado.
   const sortedFlats = [...filteredFlats];
 
   /*
-   * TODO JS-FLATS-2
-   * Ordena sortedFlats de acordo com sortBy.value:
-   * city, price ou area. Se o valor for none, conserva a ordem.
-   */
+     * TODO JS-FLATS-2
+     * Ordena sortedFlats de acordo com sortBy.value:
+     * city, price ou area. Se o valor for none, conserva a ordem.
+     */
+  const criterio = sortBy.value;
 
+  if (criterio === "city") {
+    // Ordenação alfabética por cidade (com suporte para acentos em português)
+    sortedFlats.sort((a, b) => a.city.localeCompare(b.city, "pt", { sensitivity: "base" }));
+  } else if (criterio === "price") {
+    // Ordenação numérica por preço de renda (crescente)
+    sortedFlats.sort((a, b) => a.rentPrice - b.rentPrice);
+  } else if (criterio === "area") {
+    // Ordenação numérica por área (crescente)
+    sortedFlats.sort((a, b) => a.areaSize - b.areaSize);
+  }
+  // Se for "none", mantém a ordem original
   return { flats: sortedFlats, error: "" };
 }
 
@@ -161,27 +188,53 @@ function renderFlats(actionMessage = "", actionType = "success") {
 }
 
 function toggleFavourite(flatId) {
-  /*
-   * TODO JS-FLATS-4
-   * 1. Carrega o array completo.
-   * 2. Alterna isFavourite apenas no apartamento com flatId.
-   * 3. Guarda o array completo.
-   * 4. Volta a renderizar.
-   */
+  /* TODO JS-FLATS-4*/
+  const currentFlats = loadFlats();
 
-  showFlatsFeedback(`Falta implementar a alteração do favorito ${flatId}.`, "warning");
+  const updatedFlats = currentFlats.map((flat) => {
+    
+    if (flat.id === flatId) {
+      return { ...flat, isFavourite: !flat.isFavourite };
+    }
+    return flat;
+  });
+
+  const isSaved = saveFlats(updatedFlats);
+  if (isSaved) {
+    allFlats = updatedFlats;
+    updatedFlats();
+  } else {
+    showFlatsFeedback("Erro ao alterar o favorito.", "error");
+  }
 }
 
 function deleteFlat(flatId) {
-  /*
-   * TODO JS-FLATS-5
-   * 1. Pede confirmação ao utilizador.
-   * 2. Usa filter() para criar um array sem o apartamento escolhido.
-   * 3. Guarda o novo array.
-   * 4. Volta a renderizar.
-   */
+ 
+  /*  TODO JS-FLATS-5 */
 
-  showFlatsFeedback(`Falta implementar a eliminação do apartamento ${flatId}.`, "warning");
+  // 1. Pede confirmação ao utilizador
+  const confirmed = confirm("Tens a certeza que pretendes eliminar este apartamento?");
+
+  if (!confirmed) {
+    return; // Se o utilizador cancelar, ignora e sai da função
+  }
+
+  // 2. Carrega e usa filter() para criar um novo array sem o apartamento com este flatId
+  const currentFlats = loadFlats();
+  const updatedFlats = currentFlats.filter((flat) => flat.id != flatId);
+
+  // 3. Guarda o novo array no localStorage
+  const isSaved = saveFlats(updatedFlats);
+
+  // 4. Se guardou com sucesso, limpa os avisos e atualiza a interface
+  if (isSaved) {
+    showFlatsFeedback("Apartamento eliminado com sucesso!", "success");
+    // Recarrega os dados em memória e atualiza a renderização na página
+    allFlats = updatedFlats; // ou allFlats = loadFlats();
+    updateFlats();
+  } else {
+    showFlatsFeedback("Erro ao eliminar o apartamento.", "error");
+  }
 }
 
 filtersForm.addEventListener("input", () => renderFlats());
