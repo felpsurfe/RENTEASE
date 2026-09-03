@@ -82,18 +82,38 @@ function renderHome(actionMessage = "") {
   }
 
   // TODO JS-HOME-3: percorre favouriteFlats e acrescenta cada cartão a favouriteList.
+  favouriteList.replaceChild(); // Limpa o conteudo antes de renderizar.
+
+  if (favouriteFlats.length === 0) {
+    const emptyMessage = document.createElement("p");
+    emptyMessage.className = "text-muted";
+    emptyMessage.textContent = "Ainda não tens nenhum apartamento salvo como favorito";
+    favouriteList.appendChild(emptyMessage);
+  } else {
+    for (const flat of favouriteFlats) {
+
+      const card = createFlatCard(flat);
+      favouriteList.appendChild(card);
+    }
+  }
 }
 
 function removeFavourite(flatId) {
-  /*
-   * TODO JS-HOME-4
-   * 1. Carrega o array completo.
-   * 2. Usa map() para mudar apenas isFavourite do apartamento escolhido.
-   * 3. Guarda o array actualizado.
-   * 4. Volta a chamar renderHome() com uma mensagem de sucesso.
-   */
+  /* TODO JS-HOME-*/
+  const currentFlats = loadFlats();
 
-  showHomeFeedback(`Falta implementar a remoção do favorito ${flatId}.`, "warning");
+  const updatedFlats = currentFlats.map((flat) => {
+    if (flat.id == flatId) {
+      return { ...flat, isFavourite: false};
+    }
+    return flat;
+  });
+
+  const isSaved = saveFlats(updatedFlats);
+
+  if (isSaved) {
+    renderHome("Apartamento removido dos favoritos com sucesso!", "success");
+  } else {
+    showHomeFeedback("Erro ao remover o apartamento dos favoritos.", "error");
+  }
 }
-
-renderHome();

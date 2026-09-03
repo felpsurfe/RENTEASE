@@ -47,16 +47,16 @@ function getProcessedFlats() {
     const matchesCity = !city || flat.city.toLowerCase().includes(city.toLowerCase());
 
     // 2. Filtro de Preço Mínimo
-    const matchesminPrice = isNaN(minPrice) || flat.rentPrice >= minPrice;
+    const matchesminPrice = minPrice === null || Number(flat.rentPrice) >= minPrice;
 
     // 3. Filtro de Preço Máximo
-    const matchesmaxPrice = isNaN(maxPrice) || flat.rentPrice <= maxPrice;
+    const matchesmaxPrice = maxPrice === null || Number(flat.rentPrice) <= maxPrice;
 
     // 4. Filtro de Área Mínima
-    const matchesminArea = isNaN(minArea) || flat.areaSize >= minArea;
+    const matchesminArea = minArea === null || Number(flat.areaSize) >= minArea;
 
     // 5. Filtro de Área Máxima
-    const matchesmaxArea = isNaN(maxArea) || flat.areaSize <= maxArea;
+    const matchesmaxArea = maxArea === null || Number(flat.areaSize) <= maxArea;
 
     // Retorna true apenas se passar em TODOS os filtros
     return matchesCity && matchesminPrice && matchesmaxPrice && matchesminArea && matchesmaxArea;
@@ -66,11 +66,7 @@ function getProcessedFlats() {
   // Esta cópia evita ordenar directamente o array carregado.
   const sortedFlats = [...filteredFlats];
 
-  /*
-     * TODO JS-FLATS-2
-     * Ordena sortedFlats de acordo com sortBy.value:
-     * city, price ou area. Se o valor for none, conserva a ordem.
-     */
+  /* TODO JS-FLATS-2 */
   const criterio = sortBy.value;
 
   if (criterio === "city") {
@@ -146,7 +142,7 @@ function createFlatCard(flat) {
       : "Imediata"
     )
   );
-  
+
   const actions = document.createElement("div");
   actions.className = "property-card__actions";
 
@@ -203,7 +199,7 @@ function toggleFavourite(flatId) {
 
   const updatedFlats = currentFlats.map((flat) => {
 
-    if (flat.id === flatId) {
+    if (flat.id == flatId) {
       return { ...flat, isFavourite: !flat.isFavourite };
     }
     return flat;
@@ -211,8 +207,7 @@ function toggleFavourite(flatId) {
 
   const isSaved = saveFlats(updatedFlats);
   if (isSaved) {
-    allFlats = updatedFlats;
-    updatedFlats();
+    renderFlats();
   } else {
     showFlatsFeedback("Erro ao alterar o favorito.", "error");
   }
@@ -238,10 +233,7 @@ function deleteFlat(flatId) {
 
   // 4. Se guardou com sucesso, limpa os avisos e atualiza a interface
   if (isSaved) {
-    showFlatsFeedback("Apartamento eliminado com sucesso!", "success");
-    // Recarrega os dados em memória e atualiza a renderização na página
-    allFlats = updatedFlats; // ou allFlats = loadFlats();
-    updateFlats();
+    renderFlats("Apartamento eliminado com sucesso!", "success");
   } else {
     showFlatsFeedback("Erro ao eliminar o apartamento.", "error");
   }
