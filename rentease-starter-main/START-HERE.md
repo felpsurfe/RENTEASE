@@ -59,10 +59,10 @@ Faz uma tarefa de cada vez e testa antes de passar à seguinte.
 3. Completa os `TODO CSS` e testa desktop e mobile.
 4. Implementa `loadFlats()` e `saveFlats()` em `js/storage.js`.
 5. Testa o formulário vazio e confirma que a validação fornecida apresenta erros.
-6. Completa o fluxo de gravação em `js/new-flat.js`.
-7. Completa a listagem, os filtros, a ordenação e as acções em `js/flats.js`.
-8. Completa o resumo e os favoritos em `js/home.js`.
-9. Recarrega as páginas e confirma a persistência.
+6. Completa o fluxo de gravação em `js/new-flat.js`. OK
+7. Completa a listagem, os filtros, a ordenação e as acções em `js/flats.js`. OK
+8. Completa o resumo e os favoritos em `js/home.js`. OK
+9. Recarrega as páginas e confirma a persistência. 
 10. Preenche o `README.md` e executa a checklist final.
 
 ## Como usar a validação fornecida

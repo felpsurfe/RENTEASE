@@ -46,6 +46,15 @@ function createFavouriteCard(flat) {
   facts.appendChild(createFact("Área", `${flat.areaSize} m²`));
 
   // TODO JS-HOME-1: acrescenta a data de disponibilidade e o ar condicionado.
+  facts.appendChild(createFact("Ar condicionado", flat.hasAC ? "Sim" : "Não"));
+  facts.appendChild(
+    createFact(
+      "Disponível",
+      flat.dateAvailable
+        ? new Date(flat.dateAvailable).toLocaleDateString("pt-PT")
+        : "Imediata"
+    )
+  );
 
   const removeButton = document.createElement("button");
   removeButton.className = "button button--secondary button--small";
@@ -66,7 +75,7 @@ function renderHome(actionMessage = "") {
   totalFlatsCount.textContent = flats.length;
 
   // TODO JS-HOME-2: usa filter() para obter apenas os favoritos.
-  const favouriteFlats = [];
+  const favouriteFlats = flats.filter((flat) => flat.isFavourite);
 
   favouriteFlatsCount.textContent = favouriteFlats.length;
   favouriteList.replaceChildren();
@@ -81,8 +90,7 @@ function renderHome(actionMessage = "") {
     showHomeFeedback("");
   }
 
-  // TODO JS-HOME-3: percorre favouriteFlats e acrescenta cada cartão a favouriteList.
-  favouriteList.replaceChild(); // Limpa o conteudo antes de renderizar.
+  // TODO JS-HOME-3: percorre favouriteFlats e acrescenta cada cartão a favouriteList
 
   if (favouriteFlats.length === 0) {
     const emptyMessage = document.createElement("p");
@@ -91,8 +99,7 @@ function renderHome(actionMessage = "") {
     favouriteList.appendChild(emptyMessage);
   } else {
     for (const flat of favouriteFlats) {
-
-      const card = createFlatCard(flat);
+      const card = createFavouriteCard(flat);
       favouriteList.appendChild(card);
     }
   }
@@ -104,7 +111,7 @@ function removeFavourite(flatId) {
 
   const updatedFlats = currentFlats.map((flat) => {
     if (flat.id == flatId) {
-      return { ...flat, isFavourite: false};
+      return { ...flat, isFavourite: false };
     }
     return flat;
   });
@@ -117,3 +124,5 @@ function removeFavourite(flatId) {
     showHomeFeedback("Erro ao remover o apartamento dos favoritos.", "error");
   }
 }
+
+renderHome();
