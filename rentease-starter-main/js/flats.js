@@ -136,7 +136,17 @@ function createFlatCard(flat) {
   facts.appendChild(createFact("Área", `${flat.areaSize} m²`));
 
   // TODO JS-FLATS-3: acrescenta ano, ar condicionado e disponibilidade.
-
+  facts.appendChild(createFact("Ano", flat.yearBuilt));
+  facts.appendChild(createFact("Ar condicionado", flat.hasAC ? "Sim" : "Não"));
+  facts.appendChild(
+    createFact(
+      "Disponível",
+      flat.dateAvailable
+      ? new Date(flat.dateAvailable).toLocaleDateString("pt-PT")
+      : "Imediata"
+    )
+  );
+  
   const actions = document.createElement("div");
   actions.className = "property-card__actions";
 
@@ -192,7 +202,7 @@ function toggleFavourite(flatId) {
   const currentFlats = loadFlats();
 
   const updatedFlats = currentFlats.map((flat) => {
-    
+
     if (flat.id === flatId) {
       return { ...flat, isFavourite: !flat.isFavourite };
     }
@@ -209,7 +219,7 @@ function toggleFavourite(flatId) {
 }
 
 function deleteFlat(flatId) {
- 
+
   /*  TODO JS-FLATS-5 */
 
   // 1. Pede confirmação ao utilizador
